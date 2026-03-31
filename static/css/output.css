@@ -989,16 +989,16 @@ video {
   border-radius: 1.5rem;
 }
 
+.rounded-\[20px\] {
+  border-radius: 20px;
+}
+
 .rounded-full {
   border-radius: 9999px;
 }
 
 .rounded-xl {
   border-radius: 0.75rem;
-}
-
-.rounded-\[20px\] {
-  border-radius: 20px;
 }
 
 .border {
@@ -1728,6 +1728,11 @@ video {
   .pc\:py-\[50px\] {
     padding-top: 50px;
     padding-bottom: 50px;
+  }
+
+  .pc\:px-\[40px\] {
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   .pc\:pb-\[50px\] {
