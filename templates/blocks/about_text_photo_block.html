@@ -1,0 +1,33 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<section id="{{ value.anchor_id|default:'about-intro' }}"
+         class="px-[20px] py-12 tab:px-[30px] tab:py-16 pc:px-[40px] pc:py-20">
+  <div>
+    <div class="grid grid-cols-1 gap-7 pc:grid-cols-2 pc:items-stretch pc:gap-10">
+      <div class="contents pc:block pc:col-start-1 pc:row-start-1">
+        <div class="order-1">
+          <h2 class="font-cormorant text-[2.35rem] font-semibold uppercase leading-[0.9] text-[#2E5C63] tab:text-[3rem] pc:text-[3.4rem]">
+            {{ value.heading }}
+          </h2>
+          <div class="mt-3 h-px w-full max-w-[540px] bg-[#B98779]"></div>
+        </div>
+
+        <div class="about-richtext order-3 mt-1 max-w-none font-montserrat text-[1.05rem] leading-[1.62] text-[#204A4F] tab:text-[1.2rem]
+                    pc:mt-8
+                    [&_p]:mt-0 [&_p]:mb-6 [&_p:last-child]:mb-0
+                    [&_p:empty]:hidden [&_p:has(br:only-child)]:hidden
+                    [&_strong]:font-semibold [&_a]:underline">
+          {{ value.text|richtext }}
+        </div>
+      </div>
+
+      <div class="relative order-2 h-[420px] tab:h-[460px] rounded-3xl overflow-hidden bg-[#E7D8C9]
+                  pc:order-none pc:col-start-2 pc:row-start-1 pc:h-full">
+        {% if value.image %}
+          {% image value.image original as img %}
+          <img src="{{ img.url }}" alt="{{ img.alt }}" class="absolute inset-0 h-full w-full object-cover object-top">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>

@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .prices-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .prices-list > .price-card {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  @media (min-width: 768px) {
+    .prices-list > .price-card {
+      flex-basis: calc((100% - 1.25rem) / 2);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .prices-list > .price-card {
+      flex-basis: calc((100% - 2.5rem) / 3);
+    }
+  }
+}
+
 @layer utilities {
   .fullscreen-shell:fullscreen {
     display: flex;
