@@ -5,6 +5,7 @@ from wagtail.blocks import StructBlock, CharBlock
 from wgapps.blocks.first_block import FirstBlock
 from wgapps.blocks.diplomas_block import DiplomaSectionBlock
 from wgapps.blocks.feedback import FeedbackBlock
+from wgapps.blocks.education_block import EducationBlock
 from wgapps.blocks.prices_block import PricesSectionBlock
 from wgapps.blocks.video_player_block import VideoPlayerBlock
 from wgapps.blocks.about_text_photo_block import AboutTextPhotoBlock
@@ -39,6 +40,7 @@ class HomePage(Page):
         ("firstblock", FirstBlock()),
         ("about_text_photo", AboutTextPhotoBlock()),
         ("video_player", VideoPlayerBlock()),
+        ("education", EducationBlock()),
         ("diplomas", DiplomaSectionBlock()),
         ("prices", PricesSectionBlock()),
         ("feedback", FeedbackBlock()),

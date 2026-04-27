@@ -1,0 +1,62 @@
+{% load wagtailcore_tags %}
+
+<section id="{{ value.anchor_id|default:'education' }}"
+         class="bg-white px-[20px] py-14 tab:px-[30px] tab:py-16 pc:px-[50px] rounded-3xl pc:py-20">
+    {% if value.heading %}
+      <h2 class="font-cormorant font-semibold uppercase leading-none text-[#385F64]
+                 text-[2.7rem] tab:text-[3.4rem] pc:text-[40px]">
+        {{ value.heading|striptags }}
+      </h2>
+    {% endif %}
+
+    <div class="mt-4 h-px w-full max-w-[455px] bg-[#B1786B]"></div>
+
+    <div class="mt-14 grid grid-cols-1 gap-x-20 gap-y-12 tab:mt-16 tab:grid-cols-2 tab:gap-y-16 pc:gap-x-28">
+      {% for item in value.education_items %}
+        <article class="grid grid-cols-[74px_1fr] gap-6 tab:grid-cols-[86px_1fr] tab:gap-8">
+          <div class="pt-1 text-[#111111]" aria-hidden="true">
+            <svg class="h-[70px] w-[70px] tab:h-[78px] tab:w-[78px]"
+                 viewBox="0 0 92 82"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M46 6.5L82.5 19.2C88.5 21.3 88.5 31 82.5 33.1L46 45.8L9.5 33.1C3.5 31 3.5 21.3 9.5 19.2L46 6.5Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linejoin="round"/>
+              <path d="M16.8 36.6V53.8C16.8 65.9 29.9 73.2 46 73.2C62.1 73.2 75.2 65.9 75.2 53.8V36.6"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"/>
+              <path d="M46 45.8L16.8 36.6"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M8.6 30.1V57.4"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <div class="min-w-0">
+            {% if item.heading %}
+              <h3 class="font-cormorant font-semibold uppercase leading-[1.17] text-[#173B36]
+                         text-[1.95rem] tab:text-[2rem] pc:text-[22px]">
+                {{ item.heading|striptags }}
+              </h3>
+            {% endif %}
+
+            {% if item.contents %}
+              <div class="mt-5 font-montserrat text-[#385F64] leading-snug
+                          text-[1.25rem] tab:text-[12px]
+                          [&_p]:m-0 [&_strong]:font-semibold">
+                {{ item.contents|richtext }}
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
