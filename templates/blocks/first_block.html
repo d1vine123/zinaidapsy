@@ -44,13 +44,15 @@
 
       {# Кнопка #}
       {% if value.button_text %}
-      <a href="{{ value.button_link|default:'#' }}"
-         class="inline-block font-montserrat uppercase text-white bg-accent rounded-full
-                hover:opacity-80 transition-opacity
-                text-[0.65rem] tracking-[0.15em] px-7 py-3
-                tab:text-xs tab:tracking-[0.2em] tab:px-10 tab:py-4">
+      <button type="button"
+              data-heading="{{ value.heading }}"
+              onclick="(window.openFeedbackPopup||function(){})(this.dataset.heading)"
+              class="inline-block font-montserrat uppercase text-white bg-accent rounded-full
+                     hover:opacity-80 transition-opacity
+                     text-[0.65rem] tracking-[0.15em] px-7 py-3
+                     tab:text-xs tab:tracking-[0.2em] tab:px-10 tab:py-4">
         {{ value.button_text }}
-      </a>
+      </button>
       {% endif %}
 
     </div>

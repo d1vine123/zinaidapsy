@@ -1,7 +1,7 @@
 {% load wagtailcore_tags %}
 
 <section id="{{ value.anchor_id|default:'education' }}"
-         class="bg-white px-[20px] py-14 tab:px-[30px] tab:py-16 pc:px-[50px] rounded-3xl pc:py-20">
+         class="mb-10 bg-white px-[20px] py-14 tab:mb-12 tab:px-[30px] tab:py-16 pc:mb-16 pc:px-[50px] rounded-3xl pc:py-20">
     {% if value.heading %}
       <h2 class="font-cormorant font-semibold uppercase leading-none text-[#385F64]
                  text-[2.7rem] tab:text-[3.4rem] pc:text-[40px]">
@@ -42,14 +42,14 @@
           <div class="min-w-0">
             {% if item.heading %}
               <h3 class="font-cormorant font-semibold uppercase leading-[1.17] text-[#173B36]
-                         text-[1.95rem] tab:text-[2rem] pc:text-[22px]">
+                         text-[1rem] tab:text-[2rem] pc:text-[22px]">
                 {{ item.heading|striptags }}
               </h3>
             {% endif %}
 
             {% if item.contents %}
               <div class="mt-5 font-montserrat text-[#385F64] leading-snug
-                          text-[1.25rem] tab:text-[12px]
+                          text-[0.7rem] tab:text-[12px]
                           [&_p]:m-0 [&_strong]:font-semibold">
                 {{ item.contents|richtext }}
               </div>
@@ -58,5 +58,4 @@
         </article>
       {% endfor %}
     </div>
-  </div>
 </section>

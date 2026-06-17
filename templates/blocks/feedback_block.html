@@ -1,7 +1,7 @@
 {% load wagtailcore_tags %}
 
 <section id="{{ value.anchor_id|default:'feedback' }}"
-         class="bg-white py-16 px-[20px]  tab:px-[30px] rounded-[20px] pc:px-[50px] pc:mb-[50px]">
+         class="bg-white py-16 px-[20px]  tab:px-[30px] rounded-[20px] pc:px-[50px] pc:mb-[50px] mb-[30px]">
 
   <h2 class="font-cormorant font-semibold uppercase leading-tight text-heading
              text-[2rem] tab:text-4xl pc:text-[2.8rem] mb-10">
@@ -40,26 +40,26 @@
 
     <div class="flex flex-col gap-2">
       <label class="font-montserrat uppercase text-body text-[0.6rem] tracking-[0.18em] font-light">
-        Удобный способ связи
+        Удобные способы связи
       </label>
       <div class="flex flex-wrap gap-x-5 gap-y-2">
         <label class="flex items-center gap-2 cursor-pointer">
-          <input type="radio" name="contact_method" value="Звонок"
+          <input type="checkbox" name="contact_method" value="Звонок"
                  class="accent-[color:var(--color-accent,#8B5E52)] cursor-pointer">
           <span class="font-montserrat text-xs text-body">Звонок</span>
         </label>
         <label class="flex items-center gap-2 cursor-pointer">
-          <input type="radio" name="contact_method" value="WhatsApp"
+          <input type="checkbox" name="contact_method" value="WhatsApp"
                  class="accent-[color:var(--color-accent,#8B5E52)] cursor-pointer">
           <span class="font-montserrat text-xs text-body">WhatsApp</span>
         </label>
         <label class="flex items-center gap-2 cursor-pointer">
-          <input type="radio" name="contact_method" value="Telegram"
+          <input type="checkbox" name="contact_method" value="Telegram"
                  class="accent-[color:var(--color-accent,#8B5E52)] cursor-pointer">
           <span class="font-montserrat text-xs text-body">Telegram</span>
         </label>
         <label class="flex items-center gap-2 cursor-pointer">
-          <input type="radio" name="contact_method" value="Мессенджер MAX"
+          <input type="checkbox" name="contact_method" value="Мессенджер MAX"
                  class="accent-[color:var(--color-accent,#8B5E52)] cursor-pointer">
           <span class="font-montserrat text-xs text-body">Мессенджер MAX</span>
         </label>
@@ -165,26 +165,26 @@
 
       <div class="flex flex-col gap-2">
         <label class="font-montserrat uppercase text-body text-[0.6rem] tracking-[0.18em] font-light">
-          Удобный способ связи
+          Удобные способы связи
         </label>
         <div class="flex flex-wrap gap-x-5 gap-y-2">
           <label class="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="contact_method" value="Звонок"
+            <input type="checkbox" name="contact_method" value="Звонок"
                    class="accent-[color:var(--color-accent,#8B5E52)] cursor-pointer">
             <span class="font-montserrat text-xs text-body">Звонок</span>
           </label>
           <label class="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="contact_method" value="WhatsApp"
+            <input type="checkbox" name="contact_method" value="WhatsApp"
                    class="accent-[color:var(--color-accent,#8B5E52)] cursor-pointer">
             <span class="font-montserrat text-xs text-body">WhatsApp</span>
           </label>
           <label class="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="contact_method" value="Telegram"
+            <input type="checkbox" name="contact_method" value="Telegram"
                    class="accent-[color:var(--color-accent,#8B5E52)] cursor-pointer">
             <span class="font-montserrat text-xs text-body">Telegram</span>
           </label>
           <label class="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="contact_method" value="Мессенджер MAX"
+            <input type="checkbox" name="contact_method" value="Мессенджер MAX"
                    class="accent-[color:var(--color-accent,#8B5E52)] cursor-pointer">
             <span class="font-montserrat text-xs text-body">Мессенджер MAX</span>
           </label>
@@ -312,28 +312,29 @@
   setupPhoneMask(document.getElementById('fb-phone'));
   setupPhoneMask(document.getElementById('fb-modal-phone'));
 
-  // ── Способ связи: показ/скрытие поля никнейма Telegram ──────────────────
+  // ── Способы связи: показ/скрытие поля никнейма Telegram ─────────────────
   function setupContactMethod(form, tgWrapId, tgInputId) {
     const tgWrap  = document.getElementById(tgWrapId);
     const tgInput = document.getElementById(tgInputId);
     if (!form || !tgWrap || !tgInput) return;
 
-    form.querySelectorAll('input[name="contact_method"]').forEach(function (radio) {
-      radio.addEventListener('change', function () {
-        if (this.value === 'Telegram') {
-          tgWrap.classList.remove('hidden');
-          tgInput.required = true;
-        } else {
-          tgWrap.classList.add('hidden');
-          tgInput.required = false;
-          tgInput.value = '';
-        }
-      });
+    const contactInputs = form.querySelectorAll('input[name="contact_method"]');
+
+    function syncTelegramField() {
+      const telegramSelected = !!form.querySelector('input[name="contact_method"][value="Telegram"]:checked');
+      tgWrap.classList.toggle('hidden', !telegramSelected);
+      tgInput.required = telegramSelected;
+      if (!telegramSelected) tgInput.value = '';
+    }
+
+    contactInputs.forEach(function (checkbox) {
+      checkbox.addEventListener('change', syncTelegramField);
     });
 
     form.addEventListener('reset', function () {
       tgWrap.classList.add('hidden');
       tgInput.required = false;
+      tgInput.value = '';
     });
   }
 

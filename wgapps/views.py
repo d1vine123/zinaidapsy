@@ -47,7 +47,8 @@ def feedback_submit(request):
     phone            = request.POST.get("phone", "").strip()
     message          = request.POST.get("message", "").strip()
     source           = request.POST.get("source", "").strip()
-    contact_method   = request.POST.get("contact_method", "").strip()
+    contact_methods  = [method.strip() for method in request.POST.getlist("contact_method") if method.strip()]
+    contact_method   = ", ".join(contact_methods)
     telegram_username = request.POST.get("telegram_username", "").strip()
 
     if not name or not phone:
@@ -59,8 +60,8 @@ def feedback_submit(request):
         text += f"\n<b>Раздел:</b> {source}"
     text += f"\n\n<b>Имя:</b> {name}\n<b>Телефон:</b> {phone}"
     if contact_method:
-        text += f"\n<b>Способ связи:</b> {contact_method}"
-        if contact_method == "Telegram" and telegram_username:
+        text += f"\n<b>Способы связи:</b> {contact_method}"
+        if "Telegram" in contact_methods and telegram_username:
             text += f"\n<b>Telegram:</b> {telegram_username}"
     if message:
         text += f"\n<b>Сообщение:</b> {message}"
