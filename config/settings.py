@@ -20,16 +20,39 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 
+def env_bool(name, default=False):
+    return os.environ.get(name, str(default)).lower() in {"1", "true", "yes", "on"}
+
+
+def env_list(name, default=""):
+    return [item.strip() for item in os.environ.get(name, default).split(",") if item.strip()]
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-s1%twx+#*k=x))57$c#ya1ajnq)y+13m3k_wvw*wtzrf$n3q-^'
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env_bool("DEBUG", False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env_list(
+    "ALLOWED_HOSTS",
+    "localhost,127.0.0.1,zinaidapsy.ru,www.zinaidapsy.ru",
+)
+CSRF_TRUSTED_ORIGINS = env_list(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://zinaidapsy.ru,https://www.zinaidapsy.ru",
+)
+
+SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", not DEBUG)
+SESSION_COOKIE_SECURE = env_bool("SESSION_COOKIE_SECURE", not DEBUG)
+CSRF_COOKIE_SECURE = env_bool("CSRF_COOKIE_SECURE", not DEBUG)
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_HSTS_SECONDS = int(os.environ.get("SECURE_HSTS_SECONDS", "0"))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", False)
+SECURE_HSTS_PRELOAD = env_bool("SECURE_HSTS_PRELOAD", False)
 
 
 # Application definition
@@ -99,12 +122,26 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DB_ENGINE = os.environ.get("DB_ENGINE", "sqlite")
+
+if DB_ENGINE == "postgresql":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("DB_NAME", ""),
+            "USER": os.environ.get("DB_USER", ""),
+            "PASSWORD": os.environ.get("DB_PASSWORD", ""),
+            "HOST": os.environ.get("DB_HOST", "localhost"),
+            "PORT": os.environ.get("DB_PORT", "5432"),
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / os.environ.get("DB_NAME", "db.sqlite3"),
+        }
+    }
 
 
 # Password validation
@@ -147,7 +184,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
-WAGTAIL_SITE_NAME = "Zinaida Psy"
+WAGTAIL_SITE_NAME = os.environ.get("WAGTAIL_SITE_NAME", "Zinaida Psy")
+WAGTAILADMIN_BASE_URL = os.environ.get("WAGTAILADMIN_BASE_URL", "https://zinaidapsy.ru")
 
 # Telegram Bot — заполните перед запуском
 # Токен берётся у @BotFather, chat_id — ID вашей группы (отрицательное число)
