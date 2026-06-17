@@ -12,10 +12,10 @@ logger = logging.getLogger(__name__)
 
 
 def _submit_to_google_form(name, phone, source, message, contact_method="", telegram_username=""):
-    """Отправляет данные в Google Form (без авторизации). Молча игнорирует ошибки."""
+    """Отправляет данные в Google Form (без авторизации)."""
     form_id = getattr(settings, "GOOGLE_FORM_ID", "")
     if not form_id:
-        return
+        return False
     entry_name             = getattr(settings, "GOOGLE_ENTRY_NAME", "")
     entry_phone            = getattr(settings, "GOOGLE_ENTRY_PHONE", "")
     entry_message          = getattr(settings, "GOOGLE_ENTRY_MESSAGE", "")
@@ -36,8 +36,10 @@ def _submit_to_google_form(name, phone, source, message, contact_method="", tele
         req.add_header("Referer", url)
         with urllib.request.urlopen(req, timeout=10):
             pass
+        return True
     except Exception:
         logger.exception("Google Forms submit failed")
+        return False
 
 
 @require_POST
@@ -54,6 +56,10 @@ def feedback_submit(request):
     if not name or not phone:
         return JsonResponse({"ok": False, "error": "Заполните обязательные поля"}, status=400)
 
+    google_sent = _submit_to_google_form(name, phone, source, message, contact_method, telegram_username)
+    if not google_sent:
+        return JsonResponse({"ok": False, "error": "Google Forms submit failed"}, status=500)
+
     # ── Telegram ────────────────────────────────────────────────────────────
     text = "📩 <b>Новая заявка с сайта</b>"
     if source:
@@ -69,27 +75,22 @@ def feedback_submit(request):
     bot_token = getattr(settings, "TELEGRAM_BOT_TOKEN", "")
     chat_id   = getattr(settings, "TELEGRAM_CHAT_ID", "")
 
-    if not bot_token or not chat_id:
-        return JsonResponse({"ok": False, "error": "Telegram не настроен"}, status=500)
+    if bot_token and chat_id:
+        payload = urllib.parse.urlencode({
+            "chat_id":    chat_id,
+            "text":       text,
+            "parse_mode": "HTML",
+        }).encode()
 
-    payload = urllib.parse.urlencode({
-        "chat_id":    chat_id,
-        "text":       text,
-        "parse_mode": "HTML",
-    }).encode()
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        req = urllib.request.Request(url, data=payload, method="POST")
 
-    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    req = urllib.request.Request(url, data=payload, method="POST")
-
-    try:
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            result = json.loads(resp.read())
-            if not result.get("ok"):
-                return JsonResponse({"ok": False, "error": "Telegram error"}, status=500)
-    except Exception:
-        return JsonResponse({"ok": False, "error": "Ошибка соединения"}, status=500)
-
-    # ── Google Forms → Sheets (не блокирует ответ при ошибке) ─────────────
-    _submit_to_google_form(name, phone, source, message, contact_method, telegram_username)
+        try:
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                result = json.loads(resp.read())
+                if not result.get("ok"):
+                    logger.error("Telegram submit failed: %s", result)
+        except Exception:
+            logger.exception("Telegram submit failed")
 
     return JsonResponse({"ok": True})
