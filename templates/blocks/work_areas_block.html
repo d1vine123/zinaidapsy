@@ -1,0 +1,54 @@
+{% load wagtailcore_tags %}
+
+<section id="{{ value.anchor_id|default:'work-areas' }}"
+         class="mb-10 rounded-3xl bg-white px-[20px] py-14 tab:mb-12 tab:px-[30px] tab:py-16 pc:mb-16 pc:px-[50px] pc:py-20">
+  <div class="grid grid-cols-1 gap-8 pc:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] pc:gap-14">
+    <div>
+      {% if value.heading %}
+        <h2 class="font-cormorant font-semibold uppercase leading-none text-[#385F64]
+                   text-[2.3rem] tab:text-[3.4rem] pc:text-[40px]">
+          {{ value.heading|striptags }}*
+        </h2>
+      {% endif %}
+
+      <div class="mt-4 h-px w-full max-w-[455px] bg-[#B1786B]"></div>
+
+      {% if value.description %}
+        <div class="mt-7 font-montserrat text-[1rem] leading-[1.62] text-[#204A4F] tab:text-[1.12rem]
+                    [&_p]:mt-0 [&_p]:mb-5 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_a]:underline">
+          {{ value.description|richtext }}
+        </div>
+      {% endif %}
+
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 tab:grid-cols-2 tab:gap-5">
+      {% for area in value.areas %}
+        <article class="rounded-[20px] bg-card-bg px-6 py-7">
+          {% if area.heading %}
+            <h3 class="font-cormorant text-[1.55rem] font-semibold uppercase leading-tight text-[#173B36] tab:text-[1.75rem]">
+              {{ area.heading|striptags }}
+            </h3>
+          {% endif %}
+
+          {% if area.description %}
+            <div class="mt-4 font-montserrat text-sm leading-relaxed text-body
+                        [&_p]:mb-3 [&_p:last-child]:mb-0
+                        [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 [&_strong]:font-semibold">
+              {{ area.description|richtext }}
+            </div>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if value.exclusions %}
+    <div class="mt-7 rounded-[20px] border border-accent/40 px-6 py-5 font-montserrat text-sm leading-relaxed text-[#204A4F]
+                tab:mt-9 tab:px-7
+                [&_p]:inline [&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_strong]:font-semibold">
+      <span class="align-[-0.12em] text-lg leading-none" aria-hidden="true">*</span>
+      {{ value.exclusions|richtext }}
+    </div>
+  {% endif %}
+</section>
