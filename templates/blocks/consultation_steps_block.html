@@ -1,0 +1,70 @@
+{% load wagtailcore_tags %}
+
+<section id="{{ value.anchor_id|default:'consultation-steps' }}"
+         class="mb-10 rounded-3xl bg-card-bg px-[20px] py-14 tab:mb-12 tab:px-[30px] tab:py-16 pc:mb-16 pc:px-[50px] pc:py-10">
+  <div class="grid grid-cols-1 gap-8 pc:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] pc:gap-14">
+    <div>
+      {% if value.heading %}
+        <h2 class="font-cormorant font-semibold uppercase leading-none text-[#385F64]
+                   text-[2.3rem] tab:text-[3.4rem] pc:text-[40px]">
+          {{ value.heading|striptags }}
+        </h2>
+      {% endif %}
+
+      <div class="mt-4 h-px w-full max-w-[455px] bg-[#B1786B]"></div>
+
+      {% if value.description %}
+        <div class="mt-7 font-montserrat text-[1rem] leading-[1.62] text-[#204A4F] tab:text-[1.12rem]
+                    [&_p]:mt-0 [&_p]:mb-5 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_a]:underline">
+          {{ value.description|richtext }}
+        </div>
+      {% endif %}
+
+      <button type="button"
+              data-heading="{{ value.heading|striptags }}"
+              onclick="(window.openFeedbackPopup||function(){})(this.dataset.heading)"
+              class="mt-7 hidden items-center justify-center rounded-full bg-accent px-8 py-3.5 font-montserrat text-xs font-medium uppercase tracking-[0.18em] text-white transition-opacity hover:opacity-80 tab:px-10 tab:py-4 tab:tracking-[0.2em] pc:inline-flex">
+        Записаться
+      </button>
+    </div>
+
+    <div class="rounded-[28px] bg-white px-5 py-6 tab:px-7 tab:py-8">
+      <div class="grid grid-cols-1 gap-5">
+        {% for step in value.steps %}
+          <article class="grid grid-cols-[56px_1fr] gap-5">
+            <div class="relative flex justify-center">
+              {% if not forloop.last %}
+                <div class="absolute left-1/2 top-14 h-full w-px bg-accent/40"></div>
+              {% endif %}
+              <div class="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-accent font-montserrat text-[1.25rem] font-semibold leading-none text-white">
+                {{ forloop.counter }}
+              </div>
+            </div>
+
+            <div class="min-w-0 pb-5">
+              {% if step.heading %}
+                <h3 class="font-cormorant text-[1.65rem] font-semibold uppercase leading-tight text-[#173B36] tab:text-[1.9rem]">
+                  {{ step.heading|striptags }}
+                </h3>
+              {% endif %}
+
+              {% if step.description %}
+                <div class="mt-3 font-montserrat text-sm leading-relaxed text-body
+                            [&_p]:mb-2 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_a]:underline">
+                  {{ step.description|richtext }}
+                </div>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+
+      <button type="button"
+              data-heading="{{ value.heading|striptags }}"
+              onclick="(window.openFeedbackPopup||function(){})(this.dataset.heading)"
+              class="mt-7 flex w-full items-center justify-center rounded-full bg-accent px-8 py-3.5 font-montserrat text-xs font-medium uppercase tracking-[0.18em] text-white transition-opacity hover:opacity-80 tab:px-10 tab:py-4 tab:tracking-[0.2em] pc:hidden">
+        Записаться
+      </button>
+    </div>
+  </div>
+</section>

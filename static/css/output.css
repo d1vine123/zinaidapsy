@@ -669,12 +669,20 @@ video {
   top: 1.25rem;
 }
 
+.top-14 {
+  top: 3.5rem;
+}
+
 .z-40 {
   z-index: 40;
 }
 
 .z-50 {
   z-index: 50;
+}
+
+.z-10 {
+  z-index: 10;
 }
 
 .order-1 {
@@ -795,6 +803,10 @@ video {
   display: flex;
 }
 
+.inline-flex {
+  display: inline-flex;
+}
+
 .grid {
   display: grid;
 }
@@ -867,6 +879,10 @@ video {
   height: 1px;
 }
 
+.h-14 {
+  height: 3.5rem;
+}
+
 .max-h-\[78vh\] {
   max-height: 78vh;
 }
@@ -929,6 +945,14 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-14 {
+  width: 3.5rem;
+}
+
+.w-px {
+  width: 1px;
 }
 
 .min-w-0 {
@@ -1080,6 +1104,10 @@ video {
 
 .grid-cols-\[74px_1fr\] {
   grid-template-columns: 74px 1fr;
+}
+
+.grid-cols-\[56px_1fr\] {
+  grid-template-columns: 56px 1fr;
 }
 
 .flex-col {
@@ -1351,6 +1379,10 @@ video {
   background-color: rgb(255 255 255 / 0.7);
 }
 
+.bg-accent\/40 {
+  background-color: rgb(165 124 92 / 0.4);
+}
+
 .bg-gradient-to-br {
   background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
 }
@@ -1542,6 +1574,10 @@ video {
   padding-top: 6rem;
 }
 
+.pb-5 {
+  padding-bottom: 1.25rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -1659,6 +1695,18 @@ video {
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
+}
+
+.text-\[1\.65rem\] {
+  font-size: 1.65rem;
+}
+
+.text-\[1\.75rem\] {
+  font-size: 1.75rem;
+}
+
+.text-\[1\.25rem\] {
+  font-size: 1.25rem;
 }
 
 .font-light {
@@ -2319,6 +2367,10 @@ video {
     font-size: 1.75rem;
   }
 
+  .tab\:text-\[1\.9rem\] {
+    font-size: 1.9rem;
+  }
+
   .tab\:tracking-\[0\.18em\] {
     letter-spacing: 0.18em;
   }
@@ -2377,6 +2429,14 @@ video {
     display: flex;
   }
 
+  .pc\:inline-flex {
+    display: inline-flex;
+  }
+
+  .pc\:hidden {
+    display: none;
+  }
+
   .pc\:h-full {
     height: 100%;
   }
@@ -2403,6 +2463,10 @@ video {
 
   .pc\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pc\:grid-cols-\[minmax\(0\2c 0\.82fr\)_minmax\(0\2c 1\.18fr\)\] {
+    grid-template-columns: minmax(0,0.82fr) minmax(0,1.18fr);
   }
 
   .pc\:items-center {
@@ -2463,6 +2527,16 @@ video {
   .pc\:py-\[50px\] {
     padding-top: 50px;
     padding-bottom: 50px;
+  }
+
+  .pc\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .pc\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
   .pc\:pb-\[50px\] {
