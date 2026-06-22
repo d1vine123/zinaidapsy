@@ -1,0 +1,51 @@
+{% load wagtailcore_tags %}
+
+<section id="{{ value.anchor_id|default:'professional-training' }}"
+         class="mb-10 overflow-hidden rounded-[32px] border border-accent/15 bg-gradient-to-br from-[#F6EEE5] via-white to-[#E8D7C6] px-[20px] py-14 shadow-[0_24px_80px_rgba(94,75,60,0.14)] tab:mb-12 tab:px-[30px] tab:py-16 pc:mb-16 pc:px-[50px] pc:py-20">
+  <div class="grid grid-cols-1 gap-8 pc:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] pc:items-start pc:gap-14">
+    <div class="rounded-[28px] bg-white/70 px-6 py-7 backdrop-blur tab:px-8 tab:py-8">
+      <div class="mb-6 inline-block rounded-full border border-accent/40 px-4 py-2 font-montserrat text-[0.65rem] uppercase tracking-[0.24em] text-body/90">
+        Подготовка
+      </div>
+
+      {% if value.heading %}
+        <h2 class="font-cormorant font-semibold uppercase leading-none text-[#385F64]
+                   text-[2.25rem] tab:text-[3.1rem] pc:text-[3.4rem]">
+          {{ value.heading|striptags }}
+        </h2>
+      {% endif %}
+
+      {% if value.description %}
+        <div class="mt-7 font-montserrat text-[1rem] leading-[1.62] text-[#204A4F] tab:text-[1.12rem] pc:max-w-[48ch]
+                    [&_p]:mt-0 [&_p]:mb-5 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_a]:underline">
+          {{ value.description|richtext }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 gap-4">
+      {% for item in value.items %}
+        <article class="grid grid-cols-[48px_1fr] gap-4 rounded-[24px] border border-accent/15 bg-white/70 px-5 py-5 backdrop-blur tab:grid-cols-[64px_1fr] tab:gap-6 tab:px-7 tab:py-6">
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-accent font-montserrat text-[0.8rem] font-semibold text-white tab:h-16 tab:w-16 tab:text-sm">
+            {{ forloop.counter|stringformat:"02d" }}
+          </div>
+
+          <div class="min-w-0">
+            {% if item.heading %}
+              <h3 class="font-cormorant text-[1.55rem] font-semibold uppercase leading-tight text-[#173B36] tab:text-[1.9rem]">
+                {{ item.heading|striptags }}
+              </h3>
+            {% endif %}
+
+            {% if item.description %}
+              <div class="mt-3 font-montserrat text-sm leading-relaxed text-body
+                          [&_p]:mb-2 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_a]:underline">
+                {{ item.description|richtext }}
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
