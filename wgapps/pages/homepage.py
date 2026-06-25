@@ -12,6 +12,7 @@ from wgapps.blocks.about_text_photo_block import AboutTextPhotoBlock
 from wgapps.blocks.work_areas_block import WorkAreasBlock
 from wgapps.blocks.consultation_steps_block import ConsultationStepsBlock
 from wgapps.blocks.professional_training_block import ProfessionalTrainingBlock
+from wgapps.blocks.faq_block import FAQBlock
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
 
@@ -45,6 +46,7 @@ class HomePage(Page):
         ("work_areas", WorkAreasBlock()),
         ("consultation_steps", ConsultationStepsBlock()),
         ("professional_training", ProfessionalTrainingBlock()),
+        ("faq", FAQBlock()),
         ("video_player", VideoPlayerBlock()),
         ("education", EducationBlock()),
         ("diplomas", DiplomaSectionBlock()),
@@ -67,6 +69,16 @@ class HomePage(Page):
 
     template = "pages/home_page.html"
     max_count = 1
+
+    @property
+    def social_image(self):
+        for block in self.content:
+            if block.block_type == "firstblock" and block.value.get("image"):
+                return block.value.get("image")
+        for block in self.content:
+            if block.block_type == "about_text_photo" and block.value.get("image"):
+                return block.value.get("image")
+        return None
 
     class Meta:
         verbose_name = "Главная страница"

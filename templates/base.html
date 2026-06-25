@@ -1,10 +1,53 @@
-{% load static %}
+{% load static wagtailimages_tags %}
 <!DOCTYPE html>
 <html lang="ru" class="scroll-pt-16">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% with seo_title=page.seo_title|default:page.title seo_description=page.search_description|default:"" %}
     <title>{% block title %}{{ page.seo_title|default:page.title }}{% endblock %}</title>
+    {% if seo_description %}
+    <meta name="description" content="{{ seo_description }}">
+    {% endif %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ seo_title }}">
+    {% if seo_description %}
+    <meta property="og:description" content="{{ seo_description }}">
+    {% endif %}
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:site_name" content="Zinaida Psy">
+    {% if page.social_image %}
+      {% image page.social_image width-1200 as og_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ og_image.url }}">
+    <meta property="og:image:width" content="{{ og_image.width }}">
+    <meta property="og:image:height" content="{{ og_image.height }}">
+    {% endif %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Зинаида Каминская",
+        "jobTitle": "Клинический психолог",
+        "url": "{{ request.build_absolute_uri|escapejs }}",
+        {% if seo_description %}
+        "description": "{{ seo_description|escapejs }}",
+        {% endif %}
+        {% if page.social_image %}
+        "image": "{{ request.scheme }}://{{ request.get_host }}{{ og_image.url }}",
+        {% endif %}
+        "sameAs": [
+          {% if page.telegram_url %}"{{ page.telegram_url|escapejs }}"{% endif %}
+          {% if page.whatsapp_url %}{% if page.telegram_url %}, {% endif %}"{{ page.whatsapp_url|escapejs }}"{% endif %}
+          {% if page.vk_url %}{% if page.telegram_url or page.whatsapp_url %}, {% endif %}"{{ page.vk_url|escapejs }}"{% endif %}
+          {% if page.max_url %}{% if page.telegram_url or page.whatsapp_url or page.vk_url %}, {% endif %}"{{ page.max_url|escapejs }}"{% endif %}
+        ]
+      }
+    </script>
+    {% endwith %}
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">

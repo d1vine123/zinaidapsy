@@ -4,11 +4,20 @@ import json
 import logging
 
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
 
 logger = logging.getLogger(__name__)
+
+
+def robots_txt(request):
+    sitemap_url = request.build_absolute_uri(reverse("sitemap"))
+    return HttpResponse(
+        f"User-agent: *\nAllow: /\n\nSitemap: {sitemap_url}\n",
+        content_type="text/plain; charset=utf-8",
+    )
 
 
 def _submit_to_google_form(name, phone, source, message, contact_method="", telegram_username=""):

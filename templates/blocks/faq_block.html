@@ -1,0 +1,70 @@
+{% load wagtailcore_tags %}
+
+<section id="{{ value.anchor_id|default:'faq' }}"
+         class="py-16 tab:py-20 pc:py-24">
+  <div class="rounded-[32px] border border-accent/15 bg-gradient-to-br from-[#F6EEE5] via-white to-[#EEE1D4] px-[20px] py-12 shadow-[0_24px_80px_rgba(94,75,60,0.1)] tab:px-[30px] tab:py-14 pc:px-[50px] pc:py-12">
+    <div class="mx-auto max-w-[1200px]">
+      {% if value.heading %}
+        <h2 class="font-cormorant font-semibold uppercase leading-[0.95] text-heading
+                   text-[2.2rem] tab:text-[3rem] pc:max-w-[10ch] pc:text-[3.1rem]">
+          {{ value.heading|striptags }}
+        </h2>
+      {% endif %}
+
+      {% if value.description %}
+        <div class="mt-5 max-w-[70ch] font-montserrat text-[0.98rem] leading-[1.7] text-[#204A4F]
+                    tab:text-[1.05rem] pc:mt-4 pc:max-w-[62ch] pc:text-[1rem]
+                    [&_p]:mb-3 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_a]:underline">
+          {{ value.description|richtext }}
+        </div>
+      {% endif %}
+
+      <div class="mt-8 flex flex-col gap-4 tab:mt-10 pc:mt-8 pc:gap-3">
+        {% for item in value.items %}
+          <article x-data="{ open: {{ forloop.first|yesno:'true,false' }} }"
+                   class="min-w-0 overflow-hidden rounded-[28px] border border-accent/15 bg-white/85 px-5 py-5 shadow-[0_12px_36px_rgba(94,75,60,0.08)] backdrop-blur tab:px-7 tab:py-6 pc:px-7 pc:py-4">
+            <button @click="open = !open"
+                    class="flex w-full min-w-0 items-start justify-between gap-4 text-left">
+              <span class="min-w-0 font-cormorant font-semibold uppercase leading-tight text-[#173B36]
+                           text-[1.15rem] tab:text-[1.4rem] pc:pr-6 pc:text-[1.45rem] break-words">
+                {{ item.question|striptags }}
+              </span>
+              <span class="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-accent/20 text-[1.9rem] leading-none text-body/60 transition-transform duration-300 pc:h-9 pc:w-9 pc:text-[1.7rem]"
+                    :class="open ? 'rotate-45' : 'rotate-0'">+</span>
+            </button>
+
+            <div x-show="open"
+                 x-collapse
+                 class="min-w-0 overflow-hidden">
+              <div class="mt-4 max-w-[78ch] font-montserrat text-sm leading-[1.75] text-body tab:text-[0.98rem] pc:mt-3 pc:max-w-[72ch] pc:text-[0.95rem]
+                          break-words [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_strong]:font-semibold [&_a]:underline">
+                {{ item.answer|richtext }}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% if value.items %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {% for item in value.items %}
+            {
+              "@type": "Question",
+              "name": "{{ item.question|striptags|escapejs }}",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ item.answer|striptags|escapejs }}"
+              }
+            }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ]
+      }
+    </script>
+  {% endif %}
+</section>
