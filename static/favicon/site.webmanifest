@@ -1,0 +1,19 @@
+{
+  "name": "Zinaida Psy",
+  "short_name": "Zinaida Psy",
+  "icons": [
+    {
+      "src": "/static/favicon/favicon-96x96.png?v=20260627-2",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/favicon/favicon-512x512.png?v=20260627-2",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#E3D0BC",
+  "background_color": "#F3E9DE",
+  "display": "standalone"
+}

@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
+    'wagtail.contrib.sitemaps',
     'wagtail.contrib.settings',
     'wgapps',
     'wgapps.pages',
@@ -187,6 +188,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 WAGTAIL_SITE_NAME = os.environ.get("WAGTAIL_SITE_NAME", "Zinaida Psy")
 WAGTAILADMIN_BASE_URL = os.environ.get("WAGTAILADMIN_BASE_URL", "https://zinaidapsy.ru")
+PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "https://zinaidapsy.ru")
 
 # Telegram Bot — заполните перед запуском
 # Токен берётся у @BotFather, chat_id — ID вашей группы (отрицательное число)

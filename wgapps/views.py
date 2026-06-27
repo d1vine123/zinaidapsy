@@ -8,16 +8,55 @@ from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
+from wagtail.contrib.sitemaps.sitemap_generator import Sitemap as WagtailSitemap
+from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
 
 logger = logging.getLogger(__name__)
 
 
+def _public_absolute_url(path):
+    base_url = getattr(settings, "PUBLIC_SITE_URL", "").strip()
+    if not base_url:
+        return ""
+    return urllib.parse.urljoin(base_url.rstrip("/") + "/", path.lstrip("/"))
+
+
 def robots_txt(request):
-    sitemap_url = request.build_absolute_uri(reverse("sitemap"))
+    sitemap_url = _public_absolute_url(reverse("sitemap")) or request.build_absolute_uri(reverse("sitemap"))
     return HttpResponse(
         f"User-agent: *\nAllow: /\n\nSitemap: {sitemap_url}\n",
         content_type="text/plain; charset=utf-8",
     )
+
+
+class PublicSitemap(WagtailSitemap):
+    def _urls(self, page, protocol, domain):
+        urls = super()._urls(page, protocol, domain)
+        base_url = getattr(settings, "PUBLIC_SITE_URL", "").strip()
+        if not base_url:
+            return urls
+
+        base_parts = urllib.parse.urlsplit(base_url)
+        if not base_parts.scheme or not base_parts.netloc:
+            return urls
+
+        for url in urls:
+            location = url.get("location")
+            if not location:
+                continue
+            location_parts = urllib.parse.urlsplit(location)
+            url["location"] = urllib.parse.urlunsplit((
+                base_parts.scheme,
+                base_parts.netloc,
+                location_parts.path or "/",
+                location_parts.query,
+                location_parts.fragment,
+            ))
+        return urls
+
+
+def public_sitemap(request):
+    return wagtail_sitemap(request, sitemaps={"wagtail": PublicSitemap})
 
 
 def _submit_to_google_form(name, phone, source, message, contact_method="", telegram_username=""):

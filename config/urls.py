@@ -18,14 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from wagtail.contrib.sitemaps.views import sitemap
-from wgapps.views import feedback_submit, robots_txt
+from wgapps.views import feedback_submit, public_sitemap, robots_txt
 
 urlpatterns = [
     path('admin/', include('wagtail.admin.urls')),  # админка Wagtail
     path('documents/', include('wagtail.documents.urls')),
     path('feedback/submit/', feedback_submit, name='feedback_submit'),
     path('robots.txt', robots_txt, name='robots_txt'),
-    path('sitemap.xml', sitemap, name='sitemap'),
+    path('sitemap.xml', public_sitemap, name='sitemap'),
     path('', include('wagtail.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
