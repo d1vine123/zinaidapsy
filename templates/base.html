@@ -4,6 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        window.dataLayer = window.dataLayer || [];
+        (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=110198201', 'ym');
+
+        ym(110198201, 'init', {
+            ssr: true,
+            webvisor: true,
+            clickmap: true,
+            ecommerce: 'dataLayer',
+            referrer: document.referrer,
+            url: location.href,
+            accurateTrackBounce: true,
+            trackLinks: true
+        });
+    </script>
+    <!-- /Yandex.Metrika counter -->
     {% with seo_title=page.seo_title|default:page.title seo_description=page.search_description|default:"" %}
     <title>{% block title %}{{ page.seo_title|default:page.title }}{% endblock %}</title>
     {% if seo_description %}
@@ -55,6 +77,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-[#F3E9DE] font-montserrat min-h-screen flex flex-col">
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/110198201" style="position:absolute; left:-9999px;" alt=""></div>
+  </noscript>
   <div class="w-full max-w-[1550px] mx-auto pc:px-[40px] tab:px-[30px] px-[20px] overflow-hidden flex-1 flex flex-col">
 
     {% include "includes/header.html" %}
