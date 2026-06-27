@@ -24,6 +24,7 @@
             accurateTrackBounce: true,
             trackLinks: true
         });
+
     </script>
     <!-- /Yandex.Metrika counter -->
     {% with seo_title=page.seo_title|default:page.title seo_description=page.search_description|default:"" %}
@@ -76,7 +77,7 @@
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-[#F3E9DE] font-montserrat min-h-screen flex flex-col">
+<body x-data="{}" class="bg-[#F3E9DE] font-montserrat min-h-screen flex flex-col">
   <noscript>
     <div><img src="https://mc.yandex.ru/watch/110198201" style="position:absolute; left:-9999px;" alt=""></div>
   </noscript>
@@ -95,6 +96,7 @@
     {# ── Плашка Telegram (только ПК) ──────────────────────────── #}
     <a href="https://t.me/z_kaminskaya"
        target="_blank" rel="noopener noreferrer"
+       @click="ym(110198201, 'reachGoal', 'floating_telegram_channel_click')"
        class="hidden pc:flex items-center gap-3
               fixed bottom-20 right-6 z-40
               px-5 py-3.5 rounded-2xl

@@ -46,6 +46,7 @@
       {% if value.button_text %}
       <button type="button"
               data-heading="{{ value.heading }}"
+              @click="ym(110198201, 'reachGoal', 'hero_open_feedback')"
               onclick="(window.openFeedbackPopup||function(){})(this.dataset.heading)"
               class="inline-block font-montserrat uppercase text-white bg-accent rounded-full
                      hover:opacity-80 transition-opacity

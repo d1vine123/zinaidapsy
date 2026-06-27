@@ -32,7 +32,7 @@
       {# ── Стрелки на мобильном (рядом с заголовком) ─── #}
       <div class="flex tab:hidden gap-2 shrink-0 ml-4">
         <button type="button" aria-label="Назад"
-                @click="prev()"
+                @click="prev(); ym(110198201, 'reachGoal', 'diplomas_slider_prev_mobile')"
                 class="flex items-center justify-center
                       w-10 h-10 rounded-full bg-white/70 text-heading shadow-lg
                       ring-1 ring-heading/10 backdrop-blur-sm
@@ -43,7 +43,7 @@
           </svg>
         </button>
         <button type="button" aria-label="Вперёд"
-                @click="next()"
+                @click="next(); ym(110198201, 'reachGoal', 'diplomas_slider_next_mobile')"
                 class="flex items-center justify-center
                       w-10 h-10 rounded-full bg-white/70 text-heading shadow-lg
                       ring-1 ring-heading/10 backdrop-blur-sm
@@ -73,7 +73,7 @@
               {% image diploma_image original as img %}
               <img src="{{ img.url }}" alt="{{ img.alt }}"
                   class="w-full h-full object-contain cursor-zoom-in"
-                  @click="open('{{ img.url }}')">
+                  @click="open('{{ img.url }}'); ym(110198201, 'reachGoal', 'diplomas_zoom_{{ forloop.counter }}')">
             {% endif %}
           </div>
         </div>
@@ -83,7 +83,7 @@
 
       {# ── Стрелки на планшете и ПК (по бокам) ────────────────── #}
       <button type="button" aria-label="Назад"
-              @click="prev()"
+              @click="prev(); ym(110198201, 'reachGoal', 'diplomas_slider_prev_desktop')"
               class="hidden tab:flex
                     absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5
                     w-10 h-10 rounded-full bg-card-bg text-heading shadow-md
@@ -96,7 +96,7 @@
       </button>
 
       <button type="button" aria-label="Вперёд"
-              @click="next()"
+              @click="next(); ym(110198201, 'reachGoal', 'diplomas_slider_next_desktop')"
               class="hidden tab:flex
                     absolute right-0 top-1/2 -translate-y-1/2 translate-x-5
                     w-10 h-10 rounded-full bg-card-bg text-heading shadow-md
@@ -127,7 +127,7 @@
 
         {# ── Кнопка поворота ─── #}
         <button type="button" aria-label="Повернуть"
-                @click.stop="rotate()"
+                @click.stop="rotate(); ym(110198201, 'reachGoal', 'diplomas_lightbox_rotate')"
                 class="absolute bottom-6 left-1/2 -translate-x-1/2
                       flex items-center justify-center gap-2
                       px-5 py-2.5 rounded-full bg-white text-gray-800 text-sm font-medium shadow-lg
@@ -144,7 +144,7 @@
 
         {# ── Кнопка закрытия ─── #}
         <button type="button" aria-label="Закрыть"
-                @click.stop="close()"
+                @click.stop="close(); ym(110198201, 'reachGoal', 'diplomas_lightbox_close')"
                 class="absolute top-4 right-4
                       flex items-center justify-center
                       w-9 h-9 rounded-full bg-white/20 text-white

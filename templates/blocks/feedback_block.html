@@ -91,11 +91,13 @@
       <span class="font-montserrat text-[0.65rem] text-body/70 leading-relaxed">
         Я согласен(а) с
         <a href="/privacy-policy/" target="_blank"
+           @click="ym(110198201, 'reachGoal', 'feedback_privacy_policy_click')"
            class="underline hover:opacity-70 transition-opacity">политикой обработки персональных данных</a>
       </span>
     </label>
 
     <button type="submit"
+            @click="ym(110198201, 'reachGoal', 'feedback_form_submit')"
             class="self-start font-montserrat uppercase text-white bg-accent rounded-full
                    hover:opacity-80 transition-opacity
                    text-[0.65rem] tracking-[0.15em] px-7 py-3
@@ -127,6 +129,7 @@
               max-h-[90vh] overflow-y-auto">
 
     <button id="fb-form-modal-close"
+            @click="ym(110198201, 'reachGoal', 'feedback_modal_close')"
             class="absolute top-5 right-5 text-body/40 hover:text-body transition-colors text-xl leading-none">
       ✕
     </button>
@@ -216,11 +219,13 @@
         <span class="font-montserrat text-[0.65rem] text-body/70 leading-relaxed">
           Я согласен(а) с
           <a href="/privacy-policy/" target="_blank"
+             @click="ym(110198201, 'reachGoal', 'feedback_modal_privacy_policy_click')"
              class="underline hover:opacity-70 transition-opacity">политикой обработки персональных данных</a>
         </span>
       </label>
 
       <button type="submit"
+              @click="ym(110198201, 'reachGoal', 'feedback_modal_form_submit')"
               class="self-start font-montserrat uppercase text-white bg-accent rounded-full
                      hover:opacity-80 transition-opacity
                      text-[0.65rem] tracking-[0.15em] px-7 py-3
@@ -258,6 +263,7 @@
     </p>
 
     <button id="fb-popup-close"
+            @click="ym(110198201, 'reachGoal', 'feedback_success_popup_close')"
             class="font-montserrat uppercase text-white bg-accent rounded-full
                    hover:opacity-80 transition-opacity
                    text-[0.65rem] tracking-[0.15em] px-8 py-3">

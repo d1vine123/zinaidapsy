@@ -13,6 +13,7 @@
 
       {% if page.telegram_url %}
       <a href="{{ page.telegram_url }}" target="_blank" rel="noopener"
+         @click="ym(110198201, 'reachGoal', 'footer_social_telegram')"
          aria-label="Telegram"
          class="w-9 h-9 rounded-full bg-accent flex items-center justify-center hover:opacity-80 transition-opacity duration-200">
         <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -23,6 +24,7 @@
 
       {% if page.whatsapp_url %}
       <a href="{{ page.whatsapp_url }}" target="_blank" rel="noopener"
+         @click="ym(110198201, 'reachGoal', 'footer_social_whatsapp')"
          aria-label="WhatsApp"
          class="w-9 h-9 rounded-full bg-accent flex items-center justify-center hover:opacity-80 transition-opacity duration-200">
         <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -33,6 +35,7 @@
 
       {% if page.vk_url %}
       <a href="{{ page.vk_url }}" target="_blank" rel="noopener"
+         @click="ym(110198201, 'reachGoal', 'footer_social_vk')"
          aria-label="ВКонтакте"
          class="w-9 h-9 rounded-full bg-accent flex items-center justify-center hover:opacity-80 transition-opacity duration-200">
         <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -43,6 +46,7 @@
 
       {% if page.max_url %}
       <a href="{{ page.max_url }}" target="_blank" rel="noopener"
+         @click="ym(110198201, 'reachGoal', 'footer_social_max')"
          aria-label="MAX"
          class="w-9 h-9 rounded-full bg-accent flex items-center justify-center hover:opacity-80 transition-opacity duration-200">
         <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 1000 1000">

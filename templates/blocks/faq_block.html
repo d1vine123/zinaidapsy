@@ -23,7 +23,7 @@
         {% for item in value.items %}
           <article x-data="{ open: {{ forloop.first|yesno:'true,false' }} }"
                    class="min-w-0 overflow-hidden rounded-[28px] border border-accent/15 bg-white/85 px-5 py-5 shadow-[0_12px_36px_rgba(94,75,60,0.08)] backdrop-blur tab:px-7 tab:py-6 pc:px-7 pc:py-4">
-            <button @click="open = !open"
+            <button @click="open = !open; ym(110198201, 'reachGoal', 'faq_toggle_{{ forloop.counter }}')"
                     class="flex w-full min-w-0 items-start justify-between gap-4 text-left">
               <span class="min-w-0 font-cormorant font-semibold uppercase leading-tight text-[#173B36]
                            text-[1.15rem] tab:text-[1.4rem] pc:pr-6 pc:text-[1.45rem] break-words">

@@ -48,6 +48,7 @@
       {# Кнопка #}
       <div class="flex justify-center">
         <button data-heading="{{ value.heading|striptags }}"
+                @click="ym(110198201, 'reachGoal', 'prices_open_feedback_{{ forloop.counter }}')"
                 onclick="(window.openFeedbackPopup||function(){})(this.dataset.heading)"
                 class="font-montserrat uppercase text-white bg-accent rounded-full
                        hover:opacity-80 transition-opacity
