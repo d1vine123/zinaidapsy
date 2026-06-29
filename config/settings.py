@@ -43,7 +43,7 @@ ALLOWED_HOSTS = env_list(
 )
 CSRF_TRUSTED_ORIGINS = env_list(
     "CSRF_TRUSTED_ORIGINS",
-    "https://zinaidapsy.ru,https://www.zinaidapsy.ru",
+    "https://zinaidapsy.ru,https://www.zinaidapsy.ru,http://localhost:8000,http://127.0.0.1:8000,http://localhost:8001,http://127.0.0.1:8001",
 )
 
 SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", not DEBUG)

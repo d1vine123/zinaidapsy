@@ -1,0 +1,359 @@
+<section id="{{ value.anchor_id|default:'reviews' }}"
+         class="bg-white py-16 px-[20px] tab:py-20 rounded-[20px] tab:px-[30px] pc:px-[50px] pc:mb-[50px] mb-[30px]">
+
+  <div class="flex flex-col tab:flex-row tab:items-center tab:justify-between gap-5 mb-9">
+    <h2 class="font-cormorant font-semibold uppercase leading-tight text-heading text-[2rem] tab:text-4xl pc:text-[2.8rem]">
+      {{ value.heading }}
+    </h2>
+    <button type="button"
+            data-review-open-form
+            class="self-start tab:self-auto font-montserrat uppercase text-white bg-accent rounded-full
+                   hover:opacity-80 transition-opacity text-[0.65rem] tracking-[0.15em]
+                   px-7 py-3 tab:text-xs tab:tracking-[0.2em] tab:px-10 tab:py-4">
+      {{ value.button_text }}
+    </button>
+  </div>
+
+  <div class="relative" data-reviews-slider>
+    <div class="hidden pc:flex items-center gap-3 mb-5">
+      <button type="button"
+              data-reviews-prev
+              aria-label="Предыдущие отзывы"
+              class="w-11 h-11 rounded-full border border-accent/50 text-accent
+                     hover:bg-accent hover:text-white transition-colors flex items-center justify-center">
+        ‹
+      </button>
+      <button type="button"
+              data-reviews-next
+              aria-label="Следующие отзывы"
+              class="w-11 h-11 rounded-full border border-accent/50 text-accent
+                     hover:bg-accent hover:text-white transition-colors flex items-center justify-center">
+        ›
+      </button>
+    </div>
+
+    {% if reviews %}
+    <div data-reviews-track
+         class="reviews-track flex gap-5 tab:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-3">
+      {% for review in reviews %}
+      <article class="reviews-card snap-start shrink-0 bg-card-bg rounded-3xl px-6 py-7 tab:px-7 tab:py-8 flex flex-col min-h-[300px]">
+        <div class="flex items-center justify-between gap-4 mb-5">
+          <h3 class="font-cormorant font-semibold text-heading text-2xl leading-tight">
+            {{ review.author_name }}
+          </h3>
+          <div class="font-montserrat text-accent text-base shrink-0" aria-label="Оценка {{ review.rating }} из 5">
+            {% for i in "12345" %}
+              <span class="{% if forloop.counter <= review.rating %}text-accent{% else %}text-accent/25{% endif %}">★</span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <p class="font-montserrat text-body text-sm leading-relaxed">
+          {{ review.review_text|truncatechars:preview_chars }}
+        </p>
+
+        {% if review.review_text|length > preview_chars %}
+        <button type="button"
+                data-review-open-full
+                data-review-name="{{ review.author_name|escape }}"
+                data-review-rating="{{ review.rating }}"
+                data-review-text="{{ review.review_text|escape }}"
+                class="mt-3 self-start font-montserrat uppercase text-accent
+                       text-[0.62rem] tracking-[0.16em] hover:opacity-70 transition-opacity">
+          Читать полностью
+        </button>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-card-bg rounded-3xl px-7 py-10">
+      <p class="font-montserrat text-body text-sm leading-relaxed">
+        Здесь скоро появятся отзывы.
+      </p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<div id="review-form-modal"
+     class="fixed inset-0 z-50 flex items-center justify-center px-5 opacity-0 pointer-events-none transition-opacity duration-300">
+  <div data-review-form-close class="absolute inset-0 bg-black/40"></div>
+  <div id="review-form-card"
+       class="relative bg-white rounded-3xl px-7 py-9 max-w-md w-full shadow-xl translate-y-4
+              transition-transform duration-300 max-h-[90vh] overflow-y-auto">
+    <button type="button"
+            data-review-form-close
+            class="absolute top-5 right-5 text-body/40 hover:text-body transition-colors text-xl leading-none">
+      ✕
+    </button>
+
+    <h3 class="font-cormorant font-semibold uppercase text-heading text-2xl mb-6 leading-tight">
+      Оставить отзыв
+    </h3>
+
+    <form id="review-form" class="flex flex-col gap-5">
+      {% csrf_token %}
+
+      <div class="flex flex-col gap-1">
+        <label for="review-name" class="font-montserrat uppercase text-body text-[0.6rem] tracking-[0.18em] font-light">
+          Имя *
+        </label>
+        <input id="review-name" name="name" type="text" required maxlength="120" placeholder="Ваше имя"
+               class="border border-accent/40 rounded-xl px-4 py-3 font-montserrat text-sm text-body bg-white/60
+                      focus:outline-none focus:border-accent transition-colors">
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <span class="font-montserrat uppercase text-body text-[0.6rem] tracking-[0.18em] font-light">
+          Оценка *
+        </span>
+        <div class="flex gap-1" data-review-stars>
+          {% for i in "12345" %}
+          <button type="button"
+                  data-star-value="{{ forloop.counter }}"
+                  aria-label="{{ forloop.counter }} из 5"
+                  class="text-3xl leading-none text-accent/25 hover:text-accent transition-colors">
+            ★
+          </button>
+          {% endfor %}
+        </div>
+        <input id="review-rating" name="rating" type="hidden" required>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="review-text" class="font-montserrat uppercase text-body text-[0.6rem] tracking-[0.18em] font-light">
+          Отзыв *
+        </label>
+        <textarea id="review-text" name="text" rows="5" required maxlength="1200"
+                  placeholder="Напишите ваш отзыв..."
+                  class="border border-accent/40 rounded-xl px-4 py-3 font-montserrat text-sm text-body bg-white/60 resize-none
+                         focus:outline-none focus:border-accent transition-colors"></textarea>
+        <span class="font-montserrat text-[0.65rem] text-body/60">До 1200 символов</span>
+      </div>
+
+      <button type="submit"
+              class="self-start font-montserrat uppercase text-white bg-accent rounded-full hover:opacity-80 transition-opacity
+                     text-[0.65rem] tracking-[0.15em] px-7 py-3 tab:text-xs tab:tracking-[0.2em] tab:px-10 tab:py-4
+                     disabled:opacity-50">
+        Отправить
+      </button>
+
+      <p id="review-error" class="hidden font-montserrat text-sm text-red-600 text-center">
+        Произошла ошибка. Попробуйте позже.
+      </p>
+    </form>
+  </div>
+</div>
+
+<div id="review-full-modal"
+     class="fixed inset-0 z-50 flex items-center justify-center px-5 opacity-0 pointer-events-none transition-opacity duration-300">
+  <div data-review-full-close class="absolute inset-0 bg-black/40"></div>
+  <div id="review-full-card"
+       class="relative bg-white rounded-3xl px-7 py-9 max-w-lg w-full shadow-xl translate-y-4
+              transition-transform duration-300 max-h-[90vh] overflow-y-auto">
+    <button type="button"
+            data-review-full-close
+            class="absolute top-5 right-5 text-body/40 hover:text-body transition-colors text-xl leading-none">
+      ✕
+    </button>
+    <div id="review-full-rating" class="font-montserrat text-accent text-lg mb-4"></div>
+    <h3 id="review-full-name" class="font-cormorant font-semibold uppercase text-heading text-2xl mb-5 leading-tight"></h3>
+    <p id="review-full-text" class="font-montserrat text-body text-sm leading-relaxed whitespace-pre-line"></p>
+  </div>
+</div>
+
+<div id="review-success-modal"
+     class="fixed inset-0 z-50 flex items-center justify-center px-5 opacity-0 pointer-events-none transition-opacity duration-300">
+  <div data-review-success-close class="absolute inset-0 bg-black/40"></div>
+  <div id="review-success-card"
+       class="relative bg-card-bg rounded-3xl px-10 py-12 max-w-sm w-full text-center shadow-xl translate-y-4 transition-transform duration-300">
+    <p class="font-cormorant font-semibold uppercase text-heading text-2xl mb-3 leading-tight">
+      Спасибо!
+    </p>
+    <p class="font-montserrat text-body text-xs tracking-[0.12em] font-light leading-relaxed mb-8">
+      Отзыв отправлен и скоро появится на сайте.
+    </p>
+    <button type="button"
+            data-review-success-close
+            class="font-montserrat uppercase text-white bg-accent rounded-full hover:opacity-80 transition-opacity
+                   text-[0.65rem] tracking-[0.15em] px-8 py-3">
+      Закрыть
+    </button>
+  </div>
+</div>
+
+<style>
+  .reviews-track {
+    scrollbar-width: none;
+  }
+  .reviews-track::-webkit-scrollbar {
+    display: none;
+  }
+  .reviews-card {
+    flex-basis: calc((100% - 2px) / 1.1);
+  }
+  @media (min-width: 768px) {
+    .reviews-card {
+      flex-basis: calc((100% - 26.4px) / 2.1);
+    }
+  }
+  @media (min-width: 1280px) {
+    .reviews-card {
+      flex-basis: calc((100% - 50.4px) / 3.1);
+    }
+  }
+</style>
+
+<script>
+(function () {
+  const slider = document.querySelector('[data-reviews-slider]');
+  if (slider) {
+    const track = slider.querySelector('[data-reviews-track]');
+    const prev = slider.querySelector('[data-reviews-prev]');
+    const next = slider.querySelector('[data-reviews-next]');
+    const scrollByCard = function (direction) {
+      if (!track) return;
+      const card = track.querySelector('.reviews-card');
+      const gap = parseFloat(getComputedStyle(track).columnGap || '0');
+      const amount = card ? card.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
+      track.scrollBy({ left: direction * amount, behavior: 'smooth' });
+    };
+    if (prev) prev.addEventListener('click', function () { scrollByCard(-1); });
+    if (next) next.addEventListener('click', function () { scrollByCard(1); });
+  }
+
+  function openModal(modal, card) {
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    modal.classList.add('opacity-100');
+    if (card) card.classList.remove('translate-y-4');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function closeModal(modal, card) {
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    modal.classList.remove('opacity-100');
+    if (card) card.classList.add('translate-y-4');
+    const hasOpenReviewModal = [
+      formModal,
+      fullModal,
+      successModal,
+    ].some(function (item) {
+      return item && !item.classList.contains('pointer-events-none');
+    });
+    if (!hasOpenReviewModal) document.body.classList.remove('overflow-hidden');
+  }
+
+  const formModal = document.getElementById('review-form-modal');
+  const formCard = document.getElementById('review-form-card');
+  const fullModal = document.getElementById('review-full-modal');
+  const fullCard = document.getElementById('review-full-card');
+  const successModal = document.getElementById('review-success-modal');
+  const successCard = document.getElementById('review-success-card');
+
+  document.querySelectorAll('[data-review-open-form]').forEach(function (button) {
+    button.addEventListener('click', function () { openModal(formModal, formCard); });
+  });
+  document.querySelectorAll('[data-review-form-close]').forEach(function (button) {
+    button.addEventListener('click', function () { closeModal(formModal, formCard); });
+  });
+  document.querySelectorAll('[data-review-success-close]').forEach(function (button) {
+    button.addEventListener('click', function () { closeModal(successModal, successCard); });
+  });
+
+  document.querySelectorAll('[data-review-open-full]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      const rating = Number(button.dataset.reviewRating || 0);
+      document.getElementById('review-full-name').textContent = button.dataset.reviewName || '';
+      document.getElementById('review-full-text').textContent = button.dataset.reviewText || '';
+      document.getElementById('review-full-rating').textContent = '★'.repeat(rating) + '☆'.repeat(Math.max(0, 5 - rating));
+      openModal(fullModal, fullCard);
+    });
+  });
+  document.querySelectorAll('[data-review-full-close]').forEach(function (button) {
+    button.addEventListener('click', function () { closeModal(fullModal, fullCard); });
+  });
+
+  const form = document.getElementById('review-form');
+  const ratingInput = document.getElementById('review-rating');
+  const starWrap = document.querySelector('[data-review-stars]');
+  const stars = starWrap ? Array.from(starWrap.querySelectorAll('[data-star-value]')) : [];
+  let selectedRating = 0;
+
+  function paintStars(value) {
+    stars.forEach(function (star) {
+      const active = Number(star.dataset.starValue) <= value;
+      star.classList.toggle('text-accent', active);
+      star.classList.toggle('text-accent/25', !active);
+    });
+  }
+
+  stars.forEach(function (star) {
+    const value = Number(star.dataset.starValue);
+    star.addEventListener('mouseenter', function () { paintStars(value); });
+    star.addEventListener('click', function () {
+      selectedRating = value;
+      ratingInput.value = String(value);
+      paintStars(selectedRating);
+    });
+  });
+  if (starWrap) {
+    starWrap.addEventListener('mouseleave', function () { paintStars(selectedRating); });
+  }
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return '';
+  }
+
+  if (form) {
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const errorEl = document.getElementById('review-error');
+      const btn = form.querySelector('button[type="submit"]');
+      errorEl.classList.add('hidden');
+      if (!ratingInput.value) {
+        errorEl.textContent = 'Поставьте оценку.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      btn.disabled = true;
+      const data = new FormData(form);
+      const csrfToken = data.get('csrfmiddlewaretoken') || getCookie('csrftoken');
+      try {
+        const res = await fetch('/reviews/submit/', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'X-CSRFToken': csrfToken },
+          body: data,
+        });
+        const json = await res.json();
+        if (json.ok) {
+          form.reset();
+          selectedRating = 0;
+          paintStars(0);
+          closeModal(formModal, formCard);
+          openModal(successModal, successCard);
+        } else {
+          errorEl.textContent = json.error || 'Произошла ошибка. Попробуйте позже.';
+          errorEl.classList.remove('hidden');
+        }
+      } catch {
+        errorEl.textContent = 'Произошла ошибка. Попробуйте позже.';
+        errorEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    closeModal(formModal, formCard);
+    closeModal(fullModal, fullCard);
+    closeModal(successModal, successCard);
+  });
+})();
+</script>

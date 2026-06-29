@@ -13,6 +13,7 @@ from wgapps.blocks.work_areas_block import WorkAreasBlock
 from wgapps.blocks.consultation_steps_block import ConsultationStepsBlock
 from wgapps.blocks.professional_training_block import ProfessionalTrainingBlock
 from wgapps.blocks.faq_block import FAQBlock
+from wgapps.blocks.reviews_block import ReviewsBlock
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
 
@@ -47,6 +48,7 @@ class HomePage(Page):
         ("consultation_steps", ConsultationStepsBlock()),
         ("professional_training", ProfessionalTrainingBlock()),
         ("faq", FAQBlock()),
+        ("reviews", ReviewsBlock()),
         ("video_player", VideoPlayerBlock()),
         ("education", EducationBlock()),
         ("diplomas", DiplomaSectionBlock()),

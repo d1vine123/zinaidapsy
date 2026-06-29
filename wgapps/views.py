@@ -2,14 +2,19 @@ import urllib.request
 import urllib.parse
 import json
 import logging
+import uuid
 
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
 from wagtail.contrib.sitemaps.sitemap_generator import Sitemap as WagtailSitemap
 from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
+
+from wgapps.pages.homepage import HomePage
+from wgapps.pages.review_page import ReviewPage
 
 logger = logging.getLogger(__name__)
 
@@ -140,5 +145,44 @@ def feedback_submit(request):
                     logger.error("Telegram submit failed: %s", result)
         except Exception:
             logger.exception("Telegram submit failed")
+
+    return JsonResponse({"ok": True})
+
+
+@require_POST
+@csrf_protect
+def review_submit(request):
+    name = request.POST.get("name", "").strip()
+    text = request.POST.get("text", "").strip()
+    rating_raw = request.POST.get("rating", "").strip()
+
+    try:
+        rating = int(rating_raw)
+    except ValueError:
+        rating = 0
+
+    if not name or not text or rating < 1 or rating > 5:
+        return JsonResponse({"ok": False, "error": "Заполните обязательные поля"}, status=400)
+
+    if len(name) > 120 or len(text) > 1200:
+        return JsonResponse({"ok": False, "error": "Слишком длинный текст"}, status=400)
+
+    parent = HomePage.objects.live().first() or HomePage.objects.first()
+    if not parent:
+        logger.error("Review submit failed: HomePage not found")
+        return JsonResponse({"ok": False, "error": "Страница для отзывов не найдена"}, status=500)
+
+    created_at = timezone.now()
+    review = ReviewPage(
+        title=f"Отзыв: {name} ({created_at:%d.%m.%Y %H:%M})",
+        slug=f"review-{created_at:%Y%m%d%H%M%S}-{uuid.uuid4().hex[:8]}",
+        author_name=name,
+        rating=rating,
+        review_text=text,
+        live=False,
+        has_unpublished_changes=True,
+    )
+    parent.add_child(instance=review)
+    review.save_revision()
 
     return JsonResponse({"ok": True})

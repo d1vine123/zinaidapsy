@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="bg-white rounded-[20px] px-[20px] tab:px-[30px] pc:px-[50px] py-16 mb-[30px] pc:mb-[50px]">
+  <a href="/" class="font-montserrat uppercase text-accent text-[0.65rem] tracking-[0.18em] hover:opacity-70 transition-opacity">
+    На главную
+  </a>
+  <div class="mt-8 max-w-3xl">
+    <div class="font-montserrat text-accent text-xl mb-5" aria-label="Оценка {{ page.rating }} из 5">
+      {% for i in "12345" %}
+        <span class="{% if forloop.counter <= page.rating %}text-accent{% else %}text-accent/25{% endif %}">★</span>
+      {% endfor %}
+    </div>
+    <h1 class="font-cormorant font-semibold uppercase leading-tight text-heading text-[2rem] tab:text-4xl pc:text-[2.8rem] mb-6">
+      {{ page.author_name }}
+    </h1>
+    <p class="font-montserrat text-body text-base leading-relaxed whitespace-pre-line">
+      {{ page.review_text }}
+    </p>
+  </div>
+</section>
+{% endblock %}
