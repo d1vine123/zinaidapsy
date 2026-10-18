@@ -99,13 +99,25 @@
 
   </div>{# /max-w-[1550px] #}
 
-    {# ── Плашка Telegram (только ПК) ──────────────────────────── #}
+  {# Попап обратной связи доступен на всех страницах сайта #}
+  {% include "blocks/feedback_block.html" %}
+
+  {# ── Плавающие кнопки (только ПК) ───────────────────────────── #}
+  <div class="hidden pc:flex flex-col gap-3 fixed bottom-20 right-6 z-40">
+    <button type="button"
+            onclick="window.openFeedbackPopup('Плавающая кнопка «Записаться»')"
+            @click="ym(110198201, 'reachGoal', 'floating_feedback_open')"
+            class="flex items-center justify-center px-5 py-3.5 rounded-2xl
+                   border border-accent bg-white text-accent shadow-lg
+                   hover:bg-accent hover:text-white hover:shadow-xl hover:-translate-y-0.5
+                   transition-all duration-200">
+      <span class="text-base font-medium">Записаться</span>
+    </button>
+
     <a href="https://t.me/z_kaminskaya"
        target="_blank" rel="noopener noreferrer"
        @click="ym(110198201, 'reachGoal', 'floating_telegram_channel_click')"
-       class="hidden pc:flex items-center gap-3
-              fixed bottom-20 right-6 z-40
-              px-5 py-3.5 rounded-2xl
+       class="flex items-center gap-3 px-5 py-3.5 rounded-2xl
               bg-accent text-white shadow-lg
               hover:opacity-90 hover:shadow-xl hover:-translate-y-0.5
               transition-all duration-200">
@@ -115,5 +127,6 @@
       </svg>
       <span class="text-base font-medium">Telegram-канал</span>
     </a>
+  </div>
 </body>
 </html>

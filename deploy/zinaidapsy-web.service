@@ -1,0 +1,29 @@
+[Unit]
+Description=Zinaida Psy Django website
+Requires=zinaidapsy-web.socket
+After=network.target zinaidapsy-web.socket
+
+[Service]
+Type=notify
+NotifyAccess=main
+User=zinaidapsy
+Group=www-data
+WorkingDirectory=/srv/zinaidapsy/app
+EnvironmentFile=/srv/zinaidapsy/private/production.env
+Environment=PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+# Gunicorn detects systemd's LISTEN_FDS and inherits the protected Unix socket.
+ExecStart=/srv/zinaidapsy/venv/bin/gunicorn config.wsgi:application --workers 2 --timeout 60 --access-logfile - --error-logfile -
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=70
+Restart=on-failure
+RestartSec=5
+UMask=0027
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/srv/zinaidapsy/private /srv/zinaidapsy/shared/media
+
+[Install]
+WantedBy=multi-user.target

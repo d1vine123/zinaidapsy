@@ -1,5 +1,6 @@
 {% load wagtailcore_tags %}
 
+{% if value %}
 <section id="{{ value.anchor_id|default:'feedback' }}"
          class="bg-white py-16 px-[20px]  tab:px-[30px] rounded-[20px] pc:px-[50px] pc:mb-[50px] mb-[30px]">
 
@@ -114,7 +115,9 @@
   </form>
 
 </section>
+{% endif %}
 
+{% if not value %}
 {# ── Попап с формой (открывается из других блоков) ─────────────────────── #}
 <div id="fb-form-modal"
      class="fixed inset-0 z-50 flex items-center justify-center px-5
@@ -441,3 +444,4 @@
   }
 })();
 </script>
+{% endif %}

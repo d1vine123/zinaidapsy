@@ -1,0 +1,6 @@
+# Direct dependencies for the Django/Wagtail site and its feedback worker.
+# The legacy root requirements.txt also includes unrelated bot/data packages.
+Django==5.2.18
+wagtail==7.4.3
+gunicorn==26.2.0
+python-dotenv==1.2.4

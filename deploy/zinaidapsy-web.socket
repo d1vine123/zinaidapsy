@@ -1,0 +1,11 @@
+[Unit]
+Description=Zinaida Psy Gunicorn socket
+
+[Socket]
+ListenStream=/run/zinaidapsy-web.sock
+SocketUser=zinaidapsy
+SocketGroup=www-data
+SocketMode=0660
+
+[Install]
+WantedBy=sockets.target

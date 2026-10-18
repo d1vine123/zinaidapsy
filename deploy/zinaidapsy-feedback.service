@@ -1,0 +1,26 @@
+[Unit]
+Description=Zinaida Psy feedback delivery worker
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=zinaidapsy
+Group=www-data
+WorkingDirectory=/srv/zinaidapsy/app
+EnvironmentFile=/srv/zinaidapsy/private/production.env
+Environment=PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+# Keep exactly one worker for this SQLite database.
+ExecStart=/srv/zinaidapsy/venv/bin/python manage.py process_feedback_queue --interval 1
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=45
+UMask=0027
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/srv/zinaidapsy/private
+
+[Install]
+WantedBy=multi-user.target
